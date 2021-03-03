@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Async Await</title>
+  <link rel="stylesheet" href="../base.css">
+</head>
+
+<body>
+  <script>// // Function declaration
+    // /* disable prettier */
+    // async function fd() { }
+
+    // // Arrow function
+    // const arrowFn = async () => { };
+
+    // // Callback function
+    // window.addEventListener('click', async function () { });
+
+    // const person = {
+    //   /* eslint-disable */
+    //   // Method
+    //   sayHi: async function () { },
+    //   // method shorthand
+    //   async sayHello() { },
+    //   // function property
+    //   sayHey: async () => { },
+    // };
+    /* eslint-enable */
+
+    // Make Pizza
+
+    // function wait(ms = 0) {
+    //   return new Promise((resolve) => {
+    //     setTimeout(resolve, ms);
+    //   });
+
+    const wait = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    function makePizza(toppings = []) {
+      return new Promise(function (resolve, reject) {
+        // reject if people try with sardines
+        if (toppings.includes('sardines')) {
+          reject('Seriously? Get out 🐟 🤮');
+        }
+        const amountOfTimeToBake = 500 + toppings.length * 200;
+        // wait 1 second for the pizza to cook
+        setTimeout(function () {
+          // when you are ready, you can resolve this promise
+          resolve(`Here is your pizza 🍕 with the toppings ${toppings.join(' ')}`);
+        }, amountOfTimeToBake);
+        // if something went wrong, we can reject this promise;
+      });
+    }
+    async function go() {
+      console.log('starting');
+      await wait(2000);
+      console.log('running');
+      await wait(200);
+      console.log('ending');
+    }
+
+    // go();
+
+    async function makeDinner() {
+      const pizzaPromise1 = makePizza(['pepperoni', 'olives']);
+      const pizzaPromise2 = makePizza(['cheese', 'm&ms']);
+      const [pep, mnms] = await Promise.all([pizzaPromise1, pizzaPromise2]);
+      console.log(pep, mnms);
+    }
+
+    makeDinner();
+  </script>
+</body>
+
+</html>
